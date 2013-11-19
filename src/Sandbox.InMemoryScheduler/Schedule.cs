@@ -18,9 +18,19 @@ namespace Sandbox.InMemoryScheduler
             _log = log;
         }
 
-        public static Schedule Create(Func<Log.Delegate> log)
+        public Schedule(Func<Log.Delegate> log) :
+            this(0, 0, log)
         {
-            return new Schedule(0, 0, log);
+        }
+
+        public Schedule() :
+            this(0, 0, null)
+        {
+        }
+
+        public static Schedule Create(Func<Log.Delegate> log = null)
+        {
+            return new Schedule(log);
         }
 
         public Schedule At(int milliseconds, Action action, string label)
