@@ -18,17 +18,18 @@ namespace Sandbox.InMemoryScheduler
 
             var reset = new AutoResetEvent(false);
 
-            log.Debug(m=>m("create shedule"));
+            log.Write(m=>m("create shedule"));
 
             Schedule.Create(Log.ToDebug)
-                    .At(200, () => stop = DateTime.UtcNow)
-                    .ThenAt(100,() => reset.Set());
+                    .At(200, () => stop = DateTime.UtcNow, "set stop time")
+                    .At(300, () => { throw new Exception("Boo!"); }, "throw exception")
+                    .ThenAt(100, () => reset.Set(), "stop waiting");
 
-            log.Debug(m => m("waiting"));
+            log.Write(m => m("waiting"));
             reset.WaitOne();
 
-            log.Debug(m => m("start {0}", start.Millisecond));
-            log.Debug(m => m("stop {0}", stop.Millisecond));
+            log.Write(m => m("start {0}", start.Millisecond));
+            log.Write(m => m("stop {0}", stop.Millisecond));
 
             Assert.True(stop > start);
         }
