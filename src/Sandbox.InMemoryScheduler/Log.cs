@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Sandbox.InMemoryScheduler
 {
     public static class Log
     {
-        public static readonly Func<Delegate> ToDebug 
-            = () => (f, a) => System.Diagnostics.Debug.WriteLine(string.Concat(DateTime.UtcNow.Millisecond, ": ", f), a);
+        public static readonly Func<Delegate> ToDebug
+            = () => (f, a) => Debug.WriteLine(string.Concat(DateTime.UtcNow.Millisecond, ": ", f), a);
 
         public static void Write(
             this Func<Delegate> log, Action<Delegate> getMessage)
